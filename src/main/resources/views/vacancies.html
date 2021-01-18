@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>Поиск вакансий</title>
+    </head>
+    <body>
+    <br/>
+
+        <a href="/">вернуться на главную страницу</a>
+        <br/>
+    <br/>
+        <form th:method="POST" th:action="@{/}" >
+            <input type="submit" value="Удалить все вакансии"/>
+        </form>
+        <br/>
+
+        <h4>Найденные вакансии</h4>
+        <tbody>
+
+             <tr th:each="item : ${vacancies}">
+                 <p>
+                 <a th:href="@{/vacancies/{id}(id=${item.getIdvacancies()})}"
+                     th:text="${item.getNameVacancy() + ', ' +item.getEmployer()}"/><p/>
+             </tr>
+         </tbody>
+
+    </body>
+</html>

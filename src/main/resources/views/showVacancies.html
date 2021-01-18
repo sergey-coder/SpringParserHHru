@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>Поиск вакансий</title>
+    </head>
+    <body>
+    <h4>Информация о вакансии</h4>
+
+    <p  th:text="наименование + ' : ' + ${vacancy.getNameVacancy()}"/>
+    <p  th:text="заработная + ' ' + плата + ' : ' + ${vacancy.getSalary()}"/>
+    <p  th:text="организация  + ' : ' + ${vacancy.getEmployer()}"/>
+    <p  th:text="дата + ' ' + публикации + ' ' + вакансии + ' : ' + ${vacancy.getPublished_at()}"/>
+
+
+
+    <p> просмотреть  вакансию на hh.ru : <a th:href="${vacancy.getReference_hhru()}"
+                                                    th:text="${vacancy.getReference_hhru()}"/> <p/>
+
+
+
+    <form th:method="POST" th:action="@{/vacancies/{id}(id=${vacancy.getIdvacancies()})}">
+        <input type="submit" name="delete" value="Удалить вакансию"/>
+    </form>
+    <br/>
+
+
+    <a href="/">вернуться на главную страницу</a>
+        <br/>
+        <br/>
+        <a href="/vacancies">назад</a>
+
+    <br/>
+
+
+</body>
+</html>
