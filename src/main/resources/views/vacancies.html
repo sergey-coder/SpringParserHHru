@@ -1,30 +1,66 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://thymeleaf.org" lang="en">
 
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <title>Поиск вакансий</title>
-    </head>
-    <body>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Поиск вакансий</title>
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+          crossorigin="anonymous">
+</head>
+
+<body>
+<div class="container my-2">
     <br/>
-
-        <a href="/">вернуться на главную страницу</a>
-        <br/>
+    <a href="/" class="btn btn-primary btn-sm mb-3"> вернуться на главную страницу </a>
     <br/>
-        <form th:method="POST" th:action="@{/}" >
-            <input type="submit" value="Удалить все вакансии"/>
-        </form>
-        <br/>
-
-        <h4>Найденные вакансии</h4>
+    <br/>
+    <h4>Найденные вакансии</h4>
+    <table border="1" class="table table-striped table-responsive-md">
+        <thead>
+        <tr>
+            <th>
+                Наименование вакансии
+            </th>
+            <th>
+                Организация-работодатель
+            </th>
+        </tr>
+        </thead>
         <tbody>
+        <tr th:each="vacancy : ${vacancyList}">
+            <td><a th:href="@{/vacancies/{id}(id=${vacancy.getIdvacancies()})}" th:text="${vacancy.getNameVacancy()}"></a>
+            </td>
+            <td th:text="${vacancy.getEmployer()}"></td>
+        </tr>
+        </tbody>
+    </table>
+    <div th:if="${totalPages > 1}">
+        <div class="row col-sm-10">
+            <div class="col-sm-3">
+                Всего вакансий: [[${totalItems}]]
+            </div>
+            <div class="col-sm-4">
+                        <span th:each="i: ${#numbers.sequence(1, totalPages)}">
+                            <a th:if="${currentPage != i}" th:href="@{'/page/' + ${i}}">[[${i}]]</a>
+                            <span th:unless="${currentPage != i}">[[${i}]]</span>
+                        </span>
+            </div>
+            <div class="col-sm-2">
+                <a th:if="${currentPage <= totalPages}" th:href="@{'/page/' + ${currentPage + 1}}">Следующая</a>
+                <span th:unless="${currentPage <= totalPages}">Следующая</span>
+            </div>
 
-             <tr th:each="item : ${vacancies}">
-                 <p>
-                 <a th:href="@{/vacancies/{id}(id=${item.getIdvacancies()})}"
-                     th:text="${item.getNameVacancy() + ', ' +item.getEmployer()}"/><p/>
-             </tr>
-         </tbody>
-
-    </body>
+            <div class="col-sm-2">
+                <a th:if="${currentPage <= totalPages}" th:href="@{'/page/' + ${totalPages}}">Последняя</a>
+                <span th:unless="${currentPage <= totalPages}">Последняя</span>
+            </div>
+        </div>
+    </div>
+    <form th:method="POST" th:action="@{/}">
+        <input type="submit" value="Удалить все вакансии" class="btn btn-success btn-sm mb-3"/>
+    </form>
+</div>
+</body>
 </html>

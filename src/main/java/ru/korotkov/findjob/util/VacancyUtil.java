@@ -17,18 +17,17 @@ public class VacancyUtil {
     public void saveVacancies(VacancyService vacancyService, String incomingJson) {
 
         try {
-
             JSONObject jsonObjectMain = new JSONObject(incomingJson);
             JSONArray jsonArray = jsonObjectMain.getJSONArray("items");
 
             if (jsonArray.length() != 0) {
                 for (int i = 0; i < jsonArray.length(); i++) {
-                    String namevacancy="";
-                    String salary="";
-                    String employer="";
-                    String published_at="";
-                    String numbervacancy="";
-                    String reference_hhru="https://novosibirsk.hh.ru/vacancy/";
+                    String namevacancy;
+                    String salary;
+                    String employer;
+                    String published_at;
+                    String numbervacancy;
+                    String reference_hhru = "https://novosibirsk.hh.ru/vacancy/";
 
                     JSONObject vacanseFromJson = jsonArray.getJSONObject(i);
 
@@ -40,27 +39,29 @@ public class VacancyUtil {
 
                     StringBuilder fillSalary = new StringBuilder();
                     if (checNullObject(vacanseFromJson.get("salary")) && checNullObject(vacanseFromJson.getJSONObject("salary").get("from"))) {
-                        fillSalary.append("от " + vacanseFromJson.getJSONObject("salary").getInt("from"));
+                        fillSalary.append("от ").append(vacanseFromJson.getJSONObject("salary").getInt("from"));
                     }
 
                     if (checNullObject(vacanseFromJson.get("salary")) && checNullObject(vacanseFromJson.getJSONObject("salary").get("to"))) {
-                        fillSalary.append(" до " + vacanseFromJson.getJSONObject("salary").getInt("to"));
+                        fillSalary.append(" до ").append(vacanseFromJson.getJSONObject("salary").getInt("to"));
                     }
 
                     if (checNullObject(vacanseFromJson.get("salary"))) {
-                        fillSalary.append(" " + vacanseFromJson.getJSONObject("salary").getString("currency"));
+                        fillSalary.append(" ").append(vacanseFromJson.getJSONObject("salary").getString("currency"));
                     }
-                    salary = fillSalary.toString().equals("")? "не указано": fillSalary.toString();
+
+                    salary = fillSalary.toString().equals("") ? "не указано" : fillSalary.toString();
 
                     if (checNullObject(vacanseFromJson.getJSONObject("employer").get("name"))) {
-                        employer= vacanseFromJson.getJSONObject("employer").getString("name");
+                        employer = vacanseFromJson.getJSONObject("employer").getString("name");
                     } else {
-                        employer ="не указано";
+                        employer = "не указано";
                     }
+
                     published_at = vacanseFromJson.getString("published_at");
                     numbervacancy = vacanseFromJson.getString("id");
                     reference_hhru = reference_hhru + numbervacancy;
-                    vacancyService.addVacancy(new Vacancy(namevacancy,salary,employer,published_at,numbervacancy,reference_hhru));
+                    vacancyService.addVacancy(new Vacancy(namevacancy, salary, employer, published_at, numbervacancy, reference_hhru));
                 }
             }
 
@@ -76,17 +77,13 @@ public class VacancyUtil {
                 .get()
                 .uri(URI.create("https://api.hh.ru/vacancies?area=" + nameCity + "&specialization=" + specialization + "&page=1&per_page=50"));
 
-        String response = Objects.requireNonNull(requestSpec.exchange()
+        return Objects.requireNonNull(requestSpec.exchange()
                 .block())
                 .bodyToMono(String.class)
                 .block();
-
-        return response;
     }
 
     private boolean checNullObject(Object jsonObject) {
-        if (jsonObject.getClass().getName().equals("org.json.JSONObject$Null")) {
-            return false;
-        } else return true;
+        return !jsonObject.getClass().getName().equals("org.json.JSONObject$Null");
     }
 }

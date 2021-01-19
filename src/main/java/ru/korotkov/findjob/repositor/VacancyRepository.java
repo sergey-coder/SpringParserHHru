@@ -5,5 +5,4 @@ import org.springframework.stereotype.Repository;
 import ru.korotkov.findjob.model.Vacancy;
 
 @Repository
-public interface VacancyRepository extends JpaRepository<Vacancy,Long> {
-}
+public interface VacancyRepository extends JpaRepository<Vacancy,Long> {}

@@ -1,37 +1,47 @@
 <!DOCTYPE HTML>
-<html>
+<html lang="en">
 <head>
     <title>Поиск вакансий</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+          crossorigin="anonymous">
 </head>
 <body>
+<div class="container my-2">
     <h4>Приложение для запроса вакансий с сайта HH.ru</h4>
-
+    <br/>
     <form action="/vacancies" method="get">
         <label>Выберете специализацию:</label>
-        <p><select name="specialization">
-            <option value="1">Информационные технологии, интернет, телеком</option>
-            <option value="20">Строительство, недвижимость</option>
-            <option value="5.42">Бухгалтер</option>
-            <option value="15.146">Медицина, Фармацевтика</option>
-            <option value="15.363">Юристы</option>
-            <option value="9.168">Наука, Образование</option>
-        </select></p>
+        <p><label>
+            <select name="specialization">
+                <option value="1">Информационные технологии, интернет, телеком</option>
+                <option value="20">Строительство, недвижимость</option>
+                <option value="5.42">Бухгалтер</option>
+                <option value="15.146">Медицина, Фармацевтика</option>
+                <option value="15.363">Юристы</option>
+                <option value="9.168">Наука, Образование</option>
+            </select>
+        </label></p>
         <br/>
 
         <label>Выберете город:</label>
-        <p><select name="nameCity">
-            <option value="4">Новосибирск</option>
-            <option value="2">Санкт-Петербург</option>
-            <option value="1">Москва</option>
-            <option value="3">Екатеринбург</option>
-            <option value="14">Архангельск</option>
-            <option value="22">Владивосток</option>
-            <option value="35">Иркутск</option>
-        </select></p>
+        <p><label>
+            <select name="nameCity">
+                <option value="4">Новосибирск</option>
+                <option value="2">Санкт-Петербург</option>
+                <option value="1">Москва</option>
+                <option value="3">Екатеринбург</option>
+                <option value="14">Архангельск</option>
+                <option value="22">Владивосток</option>
+                <option value="35">Иркутск</option>
+            </select>
+        </label></p>
         <br/>
 
-        <p><input type="submit" value="Применить"></p>
+        <p><input type="submit" value="Применить" class="btn btn-success btn-sm mb-3"></p>
     </form>
+</div>
 </body>
 </html>

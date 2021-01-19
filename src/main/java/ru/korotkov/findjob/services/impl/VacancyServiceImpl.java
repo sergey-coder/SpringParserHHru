@@ -1,5 +1,8 @@
 package ru.korotkov.findjob.services.impl;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.korotkov.findjob.model.Vacancy;
 import ru.korotkov.findjob.repositor.VacancyRepository;
@@ -16,10 +19,9 @@ public class VacancyServiceImpl implements VacancyService {
         this.repositoryVacancies = repositoryVacancies;
     }
 
-
     @Override
-    public Vacancy addVacancy(Vacancy vacancy) {
-        return  repositoryVacancies.saveAndFlush(vacancy);
+    public void addVacancy(Vacancy vacancy) {
+        repositoryVacancies.saveAndFlush(vacancy);
     }
 
     @Override
@@ -34,11 +36,16 @@ public class VacancyServiceImpl implements VacancyService {
 
     @Override
     public List<Vacancy> getALL() {
-        return  repositoryVacancies.findAll();
+        return repositoryVacancies.findAll();
     }
 
     @Override
-    public Vacancy getVacancy(Long id){
+    public Vacancy getVacancy(Long id) {
         return repositoryVacancies.getOne(id);
+    }
+
+    public Page<Vacancy> getPageList(int page, int size) {
+        Pageable pageRequest = PageRequest.of(page, size);
+        return repositoryVacancies.findAll(pageRequest);
     }
 }

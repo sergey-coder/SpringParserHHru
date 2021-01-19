@@ -1,26 +1,20 @@
 package ru.korotkov.findjob.controllers;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.filter.HiddenHttpMethodFilter;
-import org.springframework.web.reactive.function.client.WebClient;
 import ru.korotkov.findjob.model.Vacancy;
 import ru.korotkov.findjob.services.VacancyService;
 import ru.korotkov.findjob.util.VacancyUtil;
 
 import javax.annotation.Resource;
-import javax.servlet.ServletContext;
-import java.net.URI;
-import java.util.Objects;
+import java.util.List;
+
 
 @Controller
 public class GreetingController {
-    // проверить как на самом деле реализуются кнопки
-    // дату публикации отформатировать
+
     @Resource
     private VacancyService vacancyService;
 
@@ -45,16 +39,30 @@ public class GreetingController {
     public String getAllVacancies(@RequestParam(value = "specialization", defaultValue = "") String specialization,
                                   @RequestParam(value = "nameCity", defaultValue = "") String nameCity,
                                   Model model) {
-        //вывод должен быть постраничный
-        // реализация фильтров
-        // сортировка
 
         if(!specialization.equals("") && !nameCity.equals("")){
             vacancyUtil.saveVacancies(vacancyService, vacancyUtil.sendHTTPSrequest(specialization,nameCity));
         }
-
-        model.addAttribute("vacancies",vacancyService.getALL());
+        Page<Vacancy> page = vacancyService.getPageList(1,15);
+         model.addAttribute("vacancyList",page);
+        List<Vacancy> vacancyList = page.getContent();
+        model.addAttribute("currentPage",1);
+        model.addAttribute("totalPages", page.getTotalPages());
+        model.addAttribute("totalItems", page.getTotalElements());
+        model.addAttribute("vacancyList",vacancyList);
                 return "vacancies";
+
+    }
+
+    @GetMapping("/page/{pageNo}")
+    public  String findPaginated(@PathVariable(value = "pageNo") int pageNo, Model model){
+        Page<Vacancy> page = vacancyService.getPageList(pageNo,15);
+        List<Vacancy> vacancyList = page.getContent();
+        model.addAttribute("currentPage",pageNo);
+        model.addAttribute("totalPages", page.getTotalPages());
+        model.addAttribute("totalItems", page.getTotalElements());
+        model.addAttribute("vacancyList",vacancyList);
+        return "vacancies";
     }
 
     @GetMapping("/vacancies/{id}")
@@ -71,7 +79,7 @@ public class GreetingController {
     }
 
     @RequestMapping(value = "/vacancies/{id}", method = RequestMethod.POST)
-    public String delete (@PathVariable("id") Long id, Model model) {
+    public String delete(@PathVariable("id") Long id) {
        vacancyService.delete(id);
 
        return "redirect:/vacancies";

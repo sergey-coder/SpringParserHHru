@@ -5,6 +5,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "Searchvacanses_Vacancies")
 public class Vacancy {
+
     @Id
     @GeneratedValue()
     private Long idvacancies;
@@ -20,11 +21,11 @@ public class Vacancy {
 
     public Vacancy(String namevacancy, String salary, String employer, String published_at, String numbervacancy, String reference_hhru) {
         this.reference_hhru = reference_hhru;
-        this.namevacancy=namevacancy;
-        this.salary=salary;
-        this.employer=employer;
-        this.published_at=published_at;
-        this.numbervacancy=numbervacancy;
+        this.namevacancy = namevacancy;
+        this.salary = salary;
+        this.employer = employer;
+        this.published_at = published_at;
+        this.numbervacancy = numbervacancy;
     }
 
     public Long getIdvacancies() {
