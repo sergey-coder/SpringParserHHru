@@ -30,7 +30,8 @@
         </thead>
         <tbody>
         <tr th:each="vacancy : ${vacancyList}">
-            <td><a th:href="@{/vacancies/{id}(id=${vacancy.getIdvacancies()})}" th:text="${vacancy.getNameVacancy()}"></a>
+            <td><a th:href="@{/vacancies/{id}(id=${vacancy.getIdvacancies()})}"
+                   th:text="${vacancy.getNameVacancy()}"></a>
             </td>
             <td th:text="${vacancy.getEmployer()}"></td>
         </tr>
@@ -58,7 +59,7 @@
             </div>
         </div>
     </div>
-    <form th:method="POST" th:action="@{/}">
+    <form th:method="DELETE" th:action="@{/vacancies}">
         <input type="submit" value="Удалить все вакансии" class="btn btn-success btn-sm mb-3"/>
     </form>
 </div>

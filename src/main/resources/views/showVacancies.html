@@ -10,7 +10,7 @@
 </head>
 <body>
 <div class="container my-2">
-    <form th:method="POST" th:action="@{/vacancies/{id}(id=${vacancy.getIdvacancies()})}">
+    <form th:method="DELETE" th:action="@{/vacancies/{id}(id=${vacancy.getIdvacancies()})}">
         <input type="submit" name="delete" value="Удалить вакансию" class="btn btn-success btn-sm mb-4"/>
     </form>
 

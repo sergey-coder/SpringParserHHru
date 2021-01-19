@@ -40,48 +40,46 @@ public class GreetingController {
                                   @RequestParam(value = "nameCity", defaultValue = "") String nameCity,
                                   Model model) {
 
-        if(!specialization.equals("") && !nameCity.equals("")){
-            vacancyUtil.saveVacancies(vacancyService, vacancyUtil.sendHTTPSrequest(specialization,nameCity));
+        if (!specialization.equals("") && !nameCity.equals("")) {
+            vacancyUtil.saveVacancies(vacancyService, vacancyUtil.sendHTTPSrequest(specialization, nameCity));
         }
-        Page<Vacancy> page = vacancyService.getPageList(1,15);
-         model.addAttribute("vacancyList",page);
+        Page<Vacancy> page = vacancyService.getPageList(1, 15);
+        model.addAttribute("vacancyList", page);
         List<Vacancy> vacancyList = page.getContent();
-        model.addAttribute("currentPage",1);
+        model.addAttribute("currentPage", 1);
         model.addAttribute("totalPages", page.getTotalPages());
         model.addAttribute("totalItems", page.getTotalElements());
-        model.addAttribute("vacancyList",vacancyList);
-                return "vacancies";
+        model.addAttribute("vacancyList", vacancyList);
+        return "vacancies";
 
     }
 
     @GetMapping("/page/{pageNo}")
-    public  String findPaginated(@PathVariable(value = "pageNo") int pageNo, Model model){
-        Page<Vacancy> page = vacancyService.getPageList(pageNo,15);
+    public String findPaginated(@PathVariable(value = "pageNo") int pageNo, Model model) {
+        Page<Vacancy> page = vacancyService.getPageList(pageNo, 15);
         List<Vacancy> vacancyList = page.getContent();
-        model.addAttribute("currentPage",pageNo);
+        model.addAttribute("currentPage", pageNo);
         model.addAttribute("totalPages", page.getTotalPages());
         model.addAttribute("totalItems", page.getTotalElements());
-        model.addAttribute("vacancyList",vacancyList);
+        model.addAttribute("vacancyList", vacancyList);
         return "vacancies";
     }
 
     @GetMapping("/vacancies/{id}")
-    public String getVacancy(@PathVariable("id") Long id,
-                             Model model) {
-        model.addAttribute("vacancy",vacancyService.getVacancy(id));
+    public String getVacancy(@PathVariable("id") Long id, Model model) {
+        model.addAttribute("vacancy", vacancyService.getVacancy(id));
         return "showVacancies";
     }
 
-    @DeleteMapping("/")
+    @DeleteMapping("/vacancies")
     public String deleteAll() {
         vacancyService.deleteAll();
         return "redirect:/";
     }
 
-    @RequestMapping(value = "/vacancies/{id}", method = RequestMethod.POST)
+    @DeleteMapping("/vacancies/{id}")
     public String delete(@PathVariable("id") Long id) {
-       vacancyService.delete(id);
-
-       return "redirect:/vacancies";
+        vacancyService.delete(id);
+        return "redirect:/vacancies";
     }
 }
